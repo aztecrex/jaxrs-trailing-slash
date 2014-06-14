@@ -16,28 +16,20 @@
  */
 package com.msiops.jaxrs.trailingslash;
 
-import java.io.IOException;
-
 import javax.annotation.Priority;
-import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.ext.Provider;
 
 /**
  * Filter to allow trailing slash in incoming resource request URI. Injects
- * {@link Policy#PROHIBIT} into the request context.
+ * {@link Policy#PROHIBIT} into the request context. Use this filter to globally
+ * enforce the policy or for dynamic filter registration.
  */
-@Provider
 @Priority(100)
-public class RequireTrailingSlashFilter implements ContainerRequestFilter {
+public final class RequireTrailingSlashFilter extends
+        AbstractPolicyInjectorFilter implements ContainerRequestFilter {
 
-    @Override
-    public void filter(final ContainerRequestContext requestContext)
-            throws IOException {
-
-        requestContext.setProperty(TrailingSlashEnforcementFilter.REQUEST_KEY,
-                Policy.REQUIRE);
-
+    public RequireTrailingSlashFilter() {
+        super(Policy.REQUIRE);
     }
 
 }

@@ -18,18 +18,21 @@ package com.msiops.jaxrs.trailingslash;
 
 import javax.annotation.Priority;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.ext.Provider;
 
 /**
  * Filter to allow trailing slash in incoming resource request URI. Injects
- * {@link Policy#ALLOW} into the request context. Use this filter to globally
- * enforce the policy or for dynamic filter registration.
+ * {@link Policy#PROHIBIT} into the request context. This filter is only
+ * applied via static (annotation) configuration.
  */
+@Provider
+@ProhibitTrailingSlash
 @Priority(100)
-public final class AllowTrailingSlashFilter extends
+public final class ProhibitTrailingSlashStaticFilter extends
         AbstractPolicyInjectorFilter implements ContainerRequestFilter {
 
-    public AllowTrailingSlashFilter() {
-        super(Policy.ALLOW);
+    public ProhibitTrailingSlashStaticFilter() {
+        super(Policy.PROHIBIT);
     }
 
 }
