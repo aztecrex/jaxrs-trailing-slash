@@ -1,0 +1,49 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'propdeps'
+apply plugin: 'propdeps-eclipse'
+
+buildscript {
+    repositories {
+        maven { url 'http://repo.spring.io/plugins-release' }
+    }
+    dependencies {
+        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.6'
+    }
+}
+
+group = 'com.msiops.jaxrs'
+version = '1.0-SNAPSHOT'
+
+description = """JAXRS :: Configure and enforce trailing-slash policy for resources"""
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+configurations {
+  provided
+}
+
+dependencies {
+  provided "javax.annotation:javax.annotation-api:1.2"
+  provided "javax.ws.rs:javax.ws.rs-api:2.0"
+
+  testCompile 'org.glassfish.jersey.core:jersey-common:2.9.1'
+
+  testCompile "junit:junit:4.11"
+  testCompile "org.mockito:mockito-core:1.9.5"
+}
+
+repositories {
+  mavenCentral()
+}
+
+eclipse {
+  project {
+    name = 'com.msiops.jaxrs.jaxrs-trailing-slash'
+  }
+}
+
+
+
+
