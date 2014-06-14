@@ -24,7 +24,7 @@ package com.msiops.jaxrs.trailingslash;
  * @author greg wiley &lt;aztec.rex@jammm.com&gt;
  *
  */
-enum Policy {
+public enum Policy {
     /**
      * Allow trailing slash or not, i.e. always passes.
      */
