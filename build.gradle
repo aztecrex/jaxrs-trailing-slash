@@ -28,7 +28,8 @@ dependencies {
   provided "javax.annotation:javax.annotation-api:1.2"
   provided "javax.ws.rs:javax.ws.rs-api:2.0"
 
-  testCompile 'org.glassfish.jersey.core:jersey-common:2.9.1'
+  testCompile 'org.glassfish.jersey.core:jersey-common:2.9.1' // for unit tests
+  testCompile 'org.glassfish.jersey.containers:jersey-container-jdk-http:2.9.1'	// server for functional tests
 
   testCompile "junit:junit:4.11"
   testCompile "org.mockito:mockito-core:1.9.5"
@@ -44,6 +45,28 @@ eclipse {
   }
 }
 
+/*
+TODO make this work.  I want to differentiate between unit
+and functional tests. But as soon as I add this code
+(or corresponding code using JUnit categories), parameterized
+tests are no longer in the build.
+
+I have filed a problem report with Gradle and am awaiting
+a response.
+
+test {
+  filter {
+    includeTestsMatching "unit.*"
+  }
+}
+
+task funTest(type: Test) {
+  filter {
+    includeTestsMatching "fun.*"
+  }
+}
+funTest.dependsOn test
+*/
 
 
 
