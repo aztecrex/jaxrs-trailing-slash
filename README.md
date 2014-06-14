@@ -48,7 +48,7 @@ public class AllowTrailingSlashForDocumentRequests implements DynamicFeature {
     @Override
     public void configure(ResourceInfo resInf, FeatureContext ctx) {
         if (DocumentResource.class.equals(resInf.getResourceClass())) {
-            context.register(AllowTrailingSlashFilter.class);
+            ctx.register(AllowTrailingSlashFilter.class);
         }
     }
 }
@@ -82,7 +82,7 @@ public class DataResource {
 ### Manual Filter Registration
 
 Depending on your JAX-RS implementation, you can register filters
-manually. For example, to simply include the default policy for all
+manually. For example, to simply enforce the default policy for all
 resources:
 ```
     // Jersey-specific, explicitly include enforcement filter
@@ -92,7 +92,7 @@ resources:
     JdkHttpServerFactory.createHttpServer(URI.create(BASE_URI), config);
 ```
 
-Or to enforce a specific policy for all resources: 
+Or, to enforce a specific policy for all resources: 
 ```
     // Jersey-specific, explicitly enforce trailing slash required on all resources
     final ResourceConfig config = new ResourceConfig(MyResource.class,
@@ -130,7 +130,8 @@ automatically by a suitable JAX-RS implementation:
 ```
 
 Note that this does not discover the explicit override filters so that they
-do not get automatically applied. They are meant for dynamic registration.
+do not get automatically applied. They are meant for dynamic registration
+in this case.
 
 # Build
 
