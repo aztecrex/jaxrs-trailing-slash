@@ -1,9 +1,5 @@
 ## JAX-RS Trailing Slash
 
-(This doc is, obviously, work in progress. Expect to finish
-it as the design/impl proceeds and will have a final version
-ready by the time the module is published on Maven Central)
-
 Enforce a trailing-slash policy in JAX-RS. This module
 includes a collection of policies and an enforcing filter
 for JAX-RS 2.0.
@@ -31,8 +27,14 @@ The default filter policy is 'Prohibit.'
 ## Usage
 
 ### Include Dependencies
-Include the dependency in your build script.
-(TODO put in Maven Central and fill out this part)
+Include the dependency in your build config.
+```
+<dependency>
+  <groupId>com.msiops.jaxrs</groupId>
+  <artifactId>jaxrs-trailing-slash</artifactId>
+  <version>${version}</version>
+</dependency>
+```
 
 ### Configuring Resources
 
