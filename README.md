@@ -12,7 +12,7 @@ Per the JAX-RS specification, a request URI with a trailing
 slash is treated the same as one without a trailing slash
 for the purpose of selecting a handler method. While
 this can be fine in some applications, it is problematic in
-others. This module provides a uniform means to declaritively
+others. This module provides a uniform means to declaratively
 reject or accept, per resource method, an incoming 
 request depending on whether its resource path has a
 trailing slash.
