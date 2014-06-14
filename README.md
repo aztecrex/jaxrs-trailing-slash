@@ -4,17 +4,16 @@
 it as the design/impl proceeds and will have a final version
 ready by the time the module is published on Maven Central)
 
-Enforce a trailing-slash policy in JAX-RS. This package
+Enforce a trailing-slash policy in JAX-RS. This module
 includes a collection of policies and an enforcing filter
 for JAX-RS 2.0.
 
 Per the JAX-RS specification, a request URI with a trailing
 slash is treated the same as one without a trailing slash
-for the purpose of selecting a handler method.
-
-This can be fine in some applications but problematic in
-others. This module provides a uniform means to (TODO
-declaratively, and per method) reject or accept an incoming
+for the purpose of selecting a handler method. While
+this can be fine in some applications, it is problematic in
+others. This module provides a uniform means to declaritively
+reject or accept, per resource method, an incoming 
 request depending on whether its resource path has a
 trailing slash.
 
@@ -31,26 +30,114 @@ The default filter policy is 'Prohibit.'
 
 ## Usage
 
+### Include Dependencies
 Include the dependency in your build script.
+(TODO put in Maven Central and fill out this part)
 
-TODO put in Maven Central and fill out this part.
+### Configuring Resources
 
-Include the enforcement filter class in your application
-configuration. It is annotated with @Provider so it can
-be auto-discovered depending on your JAX-RS implementation.
+The module provides filters for enforcing trailing slash
+policy and injecting policy into a request context as needed
+by an application. The two methods for injecting policy
+are *dynamic configuration* and *static configuration*.
 
+The filters, `AllowTrailingSlashFilter`, `ProhibitTrailingSlashFilter`,
+and `RequireTrailingSlashFilter`, support dynamic configuration:
+```
+public class AllowTrailingSlashForDocumentRequests implements DynamicFeature {
+    @Override
+    public void configure(ResourceInfo resInf, FeatureContext ctx) {
+        if (DocumentResource.class.equals(resInf.getResourceClass())) {
+            context.register(AllowTrailingSlashFilter.class);
+        }
+    }
+}
+```
 
-TODO specify the declarive bit, expecting it to be a name
-binding. But until then....
+The annotations, `@AllowTrailingSlash`, `@ProhibitTrailingSlash`, and
+`@RequireTrailingSlash` configure static policy for a resource:
+```
+@Path("data")
+public class DataResource {
+    @GET
+    @RequireTrailingSlash
+    String getData() {
+        return "data";
+    }
+}
+```
 
-Cause a policy to be injected into the request context
-properties before the enforcing filter is invoked. You can
-do this with another filter. The key is exported as a
-constant by the enforcing filter.
+Or:
+```
+@Path("data")
+@RequireTrailingSlash
+public class DataResource {
+    @GET
+    String getData() {
+        return "data";
+    }
+}
+```
 
+### Manual Filter Registration
+
+Depending on your JAX-RS implementation, you can register filters
+manually. For example, to simply include the default policy for all
+resources:
+```
+    // Jersey-specific, explicitly include enforcement filter
+    final ResourceConfig config = new ResourceConfig(MyResource.class,
+          TrailingSlashEnforcementFilter.class);
+
+    JdkHttpServerFactory.createHttpServer(URI.create(BASE_URI), config);
+```
+
+Or to enforce a specific policy for all resources: 
+```
+    // Jersey-specific, explicitly enforce trailing slash required on all resources
+    final ResourceConfig config = new ResourceConfig(MyResource.class,
+          TrailingSlashEnforcementFilter.class,
+          RequreTrailingSlashFilter.class);
+
+    JdkHttpServerFactory.createHttpServer(URI.create(BASE_URI), config);
+```
+
+Note that if you need dynamic configuration, do not include the policy
+filter globally.
+
+For static (annotation) configuration, include just the enforcement filter along
+with whatever static implementation filters you need in your application:
+```
+    // Jersey-specific, explicitly include enforcement and ability to statically
+    // configure required trailing slashes on some resources.
+    final ResourceConfig config = new ResourceConfig(MyResource.class,
+          TrailingSlashEnforcementFilter.class,
+          RequreTrailingSlashStaticFilter.class);
+
+    JdkHttpServerFactory.createHttpServer(URI.create(BASE_URI), config);
+```
+
+### Automatic Discovery
+
+The enforcement filter and the static override filters can be discovered
+automatically by a suitable JAX-RS implementation:
+```
+    // Jersey-specific, automatic discovery
+    final ResourceConfig config = new ResourceConfig(MyResource.class);
+    config.packages("com.msiops.jaxrs.trailingslash");
+
+    JdkHttpServerFactory.createHttpServer(URI.create(BASE_URI), config);
+```
+
+Note that this does not discover the explicit override filters so that they
+do not get automatically applied. They are meant for dynamic registration.
 
 # Build
 
-TODO how to build
+This code is currently built using Oracle JDK 1.8 and the Gradle 2.0 release
+candidate. My apologies for using an unreleased build tool but since this is
+my first real Gradle project, I hesitate to learn the current version then
+have to change my understanding for the version that is just around the
+corner. This way, I am experiencing the pain of change just once.
 
 
