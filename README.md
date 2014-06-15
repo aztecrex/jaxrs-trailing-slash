@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mediascience/jaxrs-trailing-slash.svg?branch=master)](https://travis-ci.org/mediascience/jaxrs-trailing-slash)
+
 ## JAX-RS Trailing Slash
 
 Enforce a trailing-slash policy in JAX-RS. This module
