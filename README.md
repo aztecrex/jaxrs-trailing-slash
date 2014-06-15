@@ -42,11 +42,16 @@ Include the dependency in your build config.
 
 The module provides filters for enforcing trailing slash
 policy and injecting policy into a request context as needed
-by an application. The two methods for injecting policy
-are *dynamic configuration* and *static configuration*.
+by an application. The three methods for injecting policy
+are *global configuration*, *dynamic configuration*, and
+*static configuration*.
+
+*Global configuration* is accomplished by registering the enforcement
+filter and, optionally, a policy filter in your application (see
+manual configurations below).
 
 The filters, `AllowTrailingSlashFilter`, `ProhibitTrailingSlashFilter`,
-and `RequireTrailingSlashFilter`, support dynamic configuration:
+and `RequireTrailingSlashFilter`, support *dynamic configuration*:
 ```
 public class AllowTrailingSlashForDocumentRequests implements DynamicFeature {
     @Override
@@ -59,7 +64,7 @@ public class AllowTrailingSlashForDocumentRequests implements DynamicFeature {
 ```
 
 The annotations, `@AllowTrailingSlash`, `@ProhibitTrailingSlash`, and
-`@RequireTrailingSlash` configure static policy for a resource:
+`@RequireTrailingSlash` provide *static configuration* for a resource:
 ```
 @Path("data")
 public class DataResource {
