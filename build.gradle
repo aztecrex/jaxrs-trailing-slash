@@ -117,7 +117,7 @@ uploadArchives {
         scm {
           url 'scm:https://github.com/mediascience/jaxrs-trailing-slash.git'
           connection 'scm:https://github.com/mediascience/jaxrs-trailing-slash.git'
-          developerConnection 'git@github.com:mediascience/jaxrs-trailing-slash.git'
+          developerConnection 'scm:git@github.com:mediascience/jaxrs-trailing-slash.git'
         }
 
         licenses {
