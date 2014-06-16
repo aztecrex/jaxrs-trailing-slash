@@ -16,6 +16,8 @@ buildscript {
 
 group = 'com.msiops.jaxrs'
 version = '1.0-SNAPSHOT'
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
 
 description = """JAXRS :: Configure and enforce trailing-slash policy for resources"""
 
@@ -89,6 +91,7 @@ artifacts {
 }
 
 signing {
+  required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
   sign configurations.archives
 }
 
