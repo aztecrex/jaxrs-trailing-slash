@@ -31,9 +31,12 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.msiops.jaxrs.trailingslash.AllowTrailingSlashFilter;
+import com.msiops.jaxrs.trailingslash.AllowTrailingSlashStaticFilter;
 import com.msiops.jaxrs.trailingslash.Policy;
 import com.msiops.jaxrs.trailingslash.ProhibitTrailingSlashFilter;
+import com.msiops.jaxrs.trailingslash.ProhibitTrailingSlashStaticFilter;
 import com.msiops.jaxrs.trailingslash.RequireTrailingSlashFilter;
+import com.msiops.jaxrs.trailingslash.RequireTrailingSlashStaticFilter;
 import com.msiops.jaxrs.trailingslash.TrailingSlashEnforcementFilter;
 
 /**
@@ -48,7 +51,12 @@ public class PolicyInjectionTest {
         return Arrays.asList(new Object[][] {
                 { new AllowTrailingSlashFilter(), Policy.ALLOW },
                 { new ProhibitTrailingSlashFilter(), Policy.PROHIBIT },
-                { new RequireTrailingSlashFilter(), Policy.REQUIRE } });
+                { new RequireTrailingSlashFilter(), Policy.REQUIRE },
+                { new AllowTrailingSlashStaticFilter(), Policy.ALLOW },
+                { new ProhibitTrailingSlashStaticFilter(), Policy.PROHIBIT },
+                { new RequireTrailingSlashStaticFilter(), Policy.REQUIRE }
+
+        });
 
     }
 
