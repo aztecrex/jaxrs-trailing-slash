@@ -15,7 +15,7 @@ buildscript {
 }
 
 group = 'com.msiops.jaxrs'
-version = '1.0-SNAPSHOT'
+version = '1.0.0'
 
 description = """JAXRS :: Configure and enforce trailing-slash policy for resources"""
 
