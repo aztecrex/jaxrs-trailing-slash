@@ -95,6 +95,7 @@ signing {
   sign configurations.archives
 }
 
+uploadArchives.onlyIf { isReleaseVersion }
 uploadArchives {
   repositories {
     mavenDeployer {
