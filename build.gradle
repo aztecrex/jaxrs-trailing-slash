@@ -97,12 +97,15 @@ signing {
 
 uploadArchives.onlyIf { isReleaseVersion }
 uploadArchives {
+  ext.uaUsername = project.hasProperty ('sonatypeUsername') ? sonatypeUsername : 'nouser'
+  ext.uaPassword = project.hasProperty ('sonatypePassword') ? sonatypePassword : 'nopass'
   repositories {
     mavenDeployer {
       beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
       repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-        authentication(userName: hasProperty('sonatypeUsername') ? sonatypeUsername : "nouser", password: hasProperty('sonatypePassword') ? sonatypePassword : "nopass")
+        //authentication(userName: hasProperty('sonatypeUsername') ? sonatypeUsername : "nouser", password: hasProperty('sonatypePassword') ? sonatypePassword : "nopass")
+        authentication(userName: uaUsername, password: uaPassword )
       }
 
       pom.project {
