@@ -102,15 +102,15 @@ uploadArchives {
       }
 
       pom.project {
-        name 'GradleFx'
+        name 'jaxrs-trailing-slash'
         packaging 'jar'
-        description 'GradleFx is a Gradle plugin for building Flex and Actionscript applications'
-        url 'http://gradlefx.github.com/'
+        description 'jaxrs-trailing-slash provides declarative control over URI trailing slashes in JAX-RS'
+        url 'https://github.com/mediascience/jaxrs-trailing-slash'
 
         scm {
-          url 'scm:git@github.com:GradleFx/GradleFx.git'
-          connection 'scm:git@github.com:GradleFx/GradleFx.git'
-          developerConnection 'scm:git@github.com:GradleFx/GradleFx.git'
+          url 'scm:https://github.com/mediascience/jaxrs-trailing-slash.git'
+          connection 'scm:https://github.com/mediascience/jaxrs-trailing-slash.git'
+          developerConnection 'git@github.com:mediascience/jaxrs-trailing-slash.git'
         }
 
         licenses {
