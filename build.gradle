@@ -4,12 +4,15 @@ apply plugin: 'propdeps'
 apply plugin: 'propdeps-eclipse'
 apply plugin: 'maven'
 apply plugin: 'signing'
+apply plugin: 'license'
 
 buildscript {
     repositories {
+        mavenCentral()
         maven { url 'http://repo.spring.io/plugins-release' }
     }
     dependencies {
+        classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.9.0'
         classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.6'
     }
 }
@@ -47,6 +50,10 @@ eclipse {
   project {
     name = 'com.msiops.jaxrs.jaxrs-trailing-slash'
   }
+}
+
+license {
+  header rootProject.file('codequality/LICENSE_HEADER')
 }
 
 /*
