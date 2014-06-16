@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'pmd'
 apply plugin: 'eclipse'
 apply plugin: 'propdeps'
 apply plugin: 'propdeps-eclipse'
