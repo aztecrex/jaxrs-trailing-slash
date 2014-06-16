@@ -14,7 +14,7 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-package unit.com.msiops.jaxrs.trailingslash;
+package fun.com.msiops.jaxrs.trailingslash;
 
 import static org.junit.Assert.*;
 
@@ -23,7 +23,8 @@ import org.junit.Test;
 import com.msiops.jaxrs.trailingslash.TrailingSlashEnforcementFilter;
 
 /**
- * Check that formal communication property does not change clients.
+ * Check that formal communication property does not change for clients
+ * operating at low level.
  *
  */
 public class PropertyKeyTest {
