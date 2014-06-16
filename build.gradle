@@ -2,6 +2,8 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'propdeps'
 apply plugin: 'propdeps-eclipse'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 buildscript {
     repositories {
@@ -67,6 +69,71 @@ task funTest(type: Test) {
 }
 funTest.dependsOn test
 */
+
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier = 'javadoc'
+  from 'build/docs/javadoc'
+}
+
+task sourcesJar(type: Jar) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+artifacts {
+  archives jar
+
+  archives javadocJar
+  archives sourcesJar
+}
+
+signing {
+  sign configurations.archives
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: sonatypeUsername, password: sonatypePassword)
+      }
+
+      pom.project {
+        name 'GradleFx'
+        packaging 'jar'
+        description 'GradleFx is a Gradle plugin for building Flex and Actionscript applications'
+        url 'http://gradlefx.github.com/'
+
+        scm {
+          url 'scm:git@github.com:GradleFx/GradleFx.git'
+          connection 'scm:git@github.com:GradleFx/GradleFx.git'
+          developerConnection 'scm:git@github.com:GradleFx/GradleFx.git'
+        }
+
+        licenses {
+          license {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            distribution 'repo'
+          }
+        }
+
+        developers {
+          developer {
+            id 'aztecrex'
+            name 'Greg Wiley'
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
 
 
 
