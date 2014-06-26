@@ -144,10 +144,7 @@ in this case.
 
 # Build
 
-This code is currently built using Oracle JDK 1.8 and the Gradle 2.0 release
-candidate. My apologies for using an unreleased build tool but since this is
-my first real Gradle project, I hesitate to learn the current version then
-have to change my understanding for the version that is just around the
-corner. This way, I am experiencing the pain of change just once.
-
+This code requires Java 8. In development, it is built with Oracle JDK
+1.8 and Gradle 2.0 release candidate. It can likely be built with Gradle
+1.12.
 
