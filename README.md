@@ -6,6 +6,9 @@ Enforce a trailing-slash policy in JAX-RS. This module
 includes a collection of policies and an enforcing filter
 for JAX-RS 2.0.
 
+This was originally a demonstration of JAX-RS 2.0 filters
+introduced [here](http://aztecrex.blogspot.com/2014/06/filters-in-jax-rs-20.html).
+
 Per the JAX-RS specification, a request URI with a trailing
 slash is treated the same as one without a trailing slash
 for the purpose of selecting a handler method. While
