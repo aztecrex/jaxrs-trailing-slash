@@ -29,7 +29,7 @@ abstract class AbstractPolicyInjectorFilter implements ContainerRequestFilter {
 
     private final Policy policy;
 
-    protected AbstractPolicyInjectorFilter(final Policy policy) {
+    protected AbstractPolicyInjectorFilter(final PolicyImpl policy) {
         this.policy = Objects.requireNonNull(policy);
     }
 

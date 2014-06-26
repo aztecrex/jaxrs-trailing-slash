@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.msiops.jaxrs.trailingslash.Policy;
+import com.msiops.jaxrs.trailingslash.PolicyImpl;
 import com.msiops.jaxrs.trailingslash.TrailingSlashEnforcementFilter;
 
 /**
@@ -34,7 +34,7 @@ public class DefaultPolicyTest {
      */
     @Test
     public void testDefaultIsProhibit() {
-        assertEquals(Policy.PROHIBIT,
+        assertEquals(PolicyImpl.PROHIBIT,
                 TrailingSlashEnforcementFilter.DEFAULT_POLICY);
     }
 

@@ -21,9 +21,6 @@ import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -46,7 +43,11 @@ import com.msiops.jaxrs.trailingslash.TrailingSlashEnforcementFilter;
  * Check enforcement filter behavior against configured policy.
  */
 @RunWith(Parameterized.class)
-public class TrailingSlashEnforcementFilterTest {
+public class TrailingSlashPolicyEnforcementTest {
+
+    private static Policy ALWAYS_PASS = s -> true;
+
+    private static Policy ALWAYS_REJECT = s -> false;
 
     private static final String WITH = "resource/";
 
@@ -61,24 +62,17 @@ public class TrailingSlashEnforcementFilterTest {
     public static Collection<Object[]> cases() {
 
         /*
-         * all named policies
+         * cover all combinations of reject and allow.
          */
-        final Stream<Object[]> policies = Arrays.stream(Policy.values()).map(
-                v -> new Object[] { v });
-        /*
-         * no policy
-         */
-        final Stream<Object[]> notset = Collections.singletonList(
-                new Object[] { null }).stream();
+        return Arrays.asList(
 
-        /*
-         * combine all cases and emit as case data.
-         */
-        return Stream.concat(policies, notset).collect(Collectors.toList());
+                new Object[] { ALWAYS_PASS },
+
+                new Object[] { ALWAYS_REJECT }
+
+                );
 
     }
-
-    private final Policy underTest;
 
     private ContainerRequestFilter filter;
 
@@ -86,7 +80,9 @@ public class TrailingSlashEnforcementFilterTest {
 
     private UriInfo muii;
 
-    public TrailingSlashEnforcementFilterTest(final Policy underTest) {
+    private final Policy underTest;
+
+    public TrailingSlashPolicyEnforcementTest(final Policy underTest) {
 
         this.underTest = underTest;
 
@@ -126,14 +122,7 @@ public class TrailingSlashEnforcementFilterTest {
 
     private void check(final String path) {
 
-        /*
-         * with no policy configured, ensure that filter enforces default
-         * policy.
-         */
-        final Policy model = this.underTest == null ? TrailingSlashEnforcementFilter.DEFAULT_POLICY
-                : this.underTest;
-
-        if (model.pass(path)) {
+        if (this.underTest.pass(path)) {
             verifyPass();
         } else {
             verifyReject();

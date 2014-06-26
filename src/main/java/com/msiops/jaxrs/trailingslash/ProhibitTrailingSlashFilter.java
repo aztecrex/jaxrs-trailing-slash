@@ -21,15 +21,15 @@ import javax.ws.rs.container.ContainerRequestFilter;
 
 /**
  * Filter to allow trailing slash in incoming resource request URI. Injects
- * {@link Policy#PROHIBIT} into the request context. Use this filter to globally
- * enforce the policy or for dynamic filter registration.
+ * {@link PolicyImpl#PROHIBIT} into the request context. Use this filter to
+ * globally enforce the policy or for dynamic filter registration.
  */
 @Priority(100)
 public final class ProhibitTrailingSlashFilter extends
-        AbstractPolicyInjectorFilter implements ContainerRequestFilter {
+AbstractPolicyInjectorFilter implements ContainerRequestFilter {
 
     public ProhibitTrailingSlashFilter() {
-        super(Policy.PROHIBIT);
+        super(PolicyImpl.PROHIBIT);
     }
 
 }

@@ -22,17 +22,17 @@ import javax.ws.rs.ext.Provider;
 
 /**
  * Filter to allow trailing slash in incoming resource request URI. Injects
- * {@link Policy#PROHIBIT} into the request context. This filter is only
+ * {@link PolicyImpl#PROHIBIT} into the request context. This filter is only
  * applied via static (annotation) configuration.
  */
 @Provider
 @ProhibitTrailingSlash
 @Priority(100)
 public final class ProhibitTrailingSlashStaticFilter extends
-        AbstractPolicyInjectorFilter implements ContainerRequestFilter {
+AbstractPolicyInjectorFilter implements ContainerRequestFilter {
 
     public ProhibitTrailingSlashStaticFilter() {
-        super(Policy.PROHIBIT);
+        super(PolicyImpl.PROHIBIT);
     }
 
 }

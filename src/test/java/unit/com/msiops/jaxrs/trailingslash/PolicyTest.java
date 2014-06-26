@@ -27,6 +27,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.msiops.jaxrs.trailingslash.Policy;
+import com.msiops.jaxrs.trailingslash.PolicyImpl;
 
 /**
  * Check policy computations.
@@ -48,12 +49,12 @@ public class PolicyTest {
          * result.
          */
         return Arrays.asList(new Object[][] {
-                { Policy.REQUIRE, "resource", false },
-                { Policy.REQUIRE, "resource/", true },
-                { Policy.PROHIBIT, "resource", true },
-                { Policy.PROHIBIT, "resource/", false },
-                { Policy.ALLOW, "resource", true },
-                { Policy.ALLOW, "resource/", true } });
+                { PolicyImpl.REQUIRE, "resource", false },
+                { PolicyImpl.REQUIRE, "resource/", true },
+                { PolicyImpl.PROHIBIT, "resource", true },
+                { PolicyImpl.PROHIBIT, "resource/", false },
+                { PolicyImpl.ALLOW, "resource", true },
+                { PolicyImpl.ALLOW, "resource/", true } });
 
     }
 

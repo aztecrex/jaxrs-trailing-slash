@@ -38,9 +38,9 @@ import javax.ws.rs.ext.Provider;
  */
 @Provider
 public final class TrailingSlashEnforcementFilter implements
-        ContainerRequestFilter {
+ContainerRequestFilter {
 
-    public static final Policy DEFAULT_POLICY = Policy.PROHIBIT;
+    public static final Policy DEFAULT_POLICY = PolicyImpl.PROHIBIT;
 
     public static final String REQUEST_KEY = "com.msiops.jaxrs.TrailingSlashPolicy";
 

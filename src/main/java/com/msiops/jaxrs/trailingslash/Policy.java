@@ -16,42 +16,7 @@
  */
 package com.msiops.jaxrs.trailingslash;
 
-/**
- * Trailing slash policy implementations. A policy can pass or fail a resource
- * path.
- *
- *
- * @author greg wiley &lt;aztec.rex@jammm.com&gt;
- *
- */
-public enum Policy {
-    /**
-     * Allow trailing slash or not, i.e. always passes.
-     */
-    ALLOW {
-        @Override
-        public boolean pass(final String rightHandPath) {
-            return true;
-        }
-    },
-    /**
-     * Reject path with trailing slash. Pass otherwise.
-     */
-    PROHIBIT {
-        @Override
-        public boolean pass(final String rightHandPath) {
-            return !rightHandPath.endsWith("/");
-        }
-    },
-    /**
-     * Reject path without trailing slash. Pass otherwise.
-     */
-    REQUIRE {
-        @Override
-        public boolean pass(final String rightHandPath) {
-            return rightHandPath.endsWith("/");
-        }
-    };
+public interface Policy {
 
     /**
      * Test a path.
@@ -63,4 +28,5 @@ public enum Policy {
      *         rejected.
      */
     public abstract boolean pass(String rightHandPath);
+
 }
