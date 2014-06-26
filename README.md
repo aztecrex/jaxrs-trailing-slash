@@ -37,7 +37,7 @@ Include the dependency in your build config.
 <dependency>
   <groupId>com.msiops.jaxrs</groupId>
   <artifactId>jaxrs-trailing-slash</artifactId>
-  <version>${version}</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 
