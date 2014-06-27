@@ -71,6 +71,22 @@ public class EnforcementWithRequireFilterTest {
     }
 
     /**
+     * With the require filter, trailing slash is allowed.
+     */
+    @Test
+    public void testPassTrailingSlashWithQuery() {
+
+        final WebTarget target = ClientBuilder.newClient()
+                .target(BASE_URI)
+                .path("data/")
+                .queryParam("a", 7);
+        assertEquals(Status.OK.getStatusCode(), target.request()
+                .get()
+                .getStatus());
+
+    }
+
+    /**
      * With the require filter, missing trailing slash is rejected.
      */
     @Test
@@ -78,6 +94,21 @@ public class EnforcementWithRequireFilterTest {
         final WebTarget target = ClientBuilder.newClient()
                 .target(BASE_URI)
                 .path("data");
+        assertEquals(Status.NOT_FOUND.getStatusCode(), target.request()
+                .get()
+                .getStatus());
+
+    }
+
+    /**
+     * With the require filter, missing trailing slash is rejected.
+     */
+    @Test
+    public void testRejectNoTrailingSlashWithQuery() {
+        final WebTarget target = ClientBuilder.newClient()
+                .target(BASE_URI)
+                .path("data")
+                .queryParam("a", 7);
         assertEquals(Status.NOT_FOUND.getStatusCode(), target.request()
                 .get()
                 .getStatus());

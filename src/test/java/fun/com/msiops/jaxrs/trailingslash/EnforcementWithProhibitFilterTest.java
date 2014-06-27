@@ -70,6 +70,21 @@ public class EnforcementWithProhibitFilterTest {
     }
 
     /**
+     * With the allow filter, missing trailing slash is allowed.
+     */
+    @Test
+    public void testPassNoTrailingSlashWithQuery() {
+        final WebTarget target = ClientBuilder.newClient()
+                .target(BASE_URI)
+                .path("data")
+                .queryParam("a", 7);
+        assertEquals(Status.OK.getStatusCode(), target.request()
+                .get()
+                .getStatus());
+
+    }
+
+    /**
      * With the prohibit filter, trailing slash is rejected.
      */
     @Test
@@ -78,6 +93,22 @@ public class EnforcementWithProhibitFilterTest {
         final WebTarget target = ClientBuilder.newClient()
                 .target(BASE_URI)
                 .path("data/");
+        assertEquals(Status.NOT_FOUND.getStatusCode(), target.request()
+                .get()
+                .getStatus());
+
+    }
+
+    /**
+     * With the prohibit filter, trailing slash is rejected.
+     */
+    @Test
+    public void testRejectTrailingSlashWithQuery() {
+
+        final WebTarget target = ClientBuilder.newClient()
+                .target(BASE_URI)
+                .path("data/")
+                .queryParam("a", 7);
         assertEquals(Status.NOT_FOUND.getStatusCode(), target.request()
                 .get()
                 .getStatus());

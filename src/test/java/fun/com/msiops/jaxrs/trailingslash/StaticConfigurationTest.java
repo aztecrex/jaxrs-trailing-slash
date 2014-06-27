@@ -65,10 +65,32 @@ public class StaticConfigurationTest {
     }
 
     @Test
+    public void testAllowPassNoTrailingSlashWithQuery() {
+        final WebTarget target = ClientBuilder.newClient()
+                                              .target(BASE_URI)
+                                              .path("data/allow")
+                                              .queryParam("a", 7);
+        assertEquals(Status.OK.getStatusCode(), target.request()
+                                                      .get()
+                                                      .getStatus());
+    }
+
+    @Test
     public void testAllowPassTrailingSlash() {
         final WebTarget target = ClientBuilder.newClient()
                                               .target(BASE_URI)
                                               .path("data/allow/");
+        assertEquals(Status.OK.getStatusCode(), target.request()
+                                                      .get()
+                                                      .getStatus());
+    }
+
+    @Test
+    public void testAllowPassTrailingSlashWithQuery() {
+        final WebTarget target = ClientBuilder.newClient()
+                                              .target(BASE_URI)
+                                              .path("data/allow/")
+                                              .queryParam("a", 7);
         assertEquals(Status.OK.getStatusCode(), target.request()
                                                       .get()
                                                       .getStatus());
@@ -85,10 +107,32 @@ public class StaticConfigurationTest {
     }
 
     @Test
+    public void testProhibitPassNoTrailingSlashWithQuery() {
+        final WebTarget target = ClientBuilder.newClient()
+                                              .target(BASE_URI)
+                                              .path("data/prohibit")
+                                              .queryParam("a", 7);
+        assertEquals(Status.OK.getStatusCode(), target.request()
+                                                      .get()
+                                                      .getStatus());
+    }
+
+    @Test
     public void testProhibitRejectTrailingSlash() {
         final WebTarget target = ClientBuilder.newClient()
                                               .target(BASE_URI)
                                               .path("data/prohibit/");
+        assertEquals(Status.NOT_FOUND.getStatusCode(), target.request()
+                                                             .get()
+                                                             .getStatus());
+    }
+
+    @Test
+    public void testProhibitRejectTrailingSlashWithQuery() {
+        final WebTarget target = ClientBuilder.newClient()
+                                              .target(BASE_URI)
+                                              .path("data/prohibit/")
+                                              .queryParam("a", 7);
         assertEquals(Status.NOT_FOUND.getStatusCode(), target.request()
                                                              .get()
                                                              .getStatus());
@@ -105,10 +149,32 @@ public class StaticConfigurationTest {
     }
 
     @Test
+    public void testRequirePassTrailingSlashWithQuery() {
+        final WebTarget target = ClientBuilder.newClient()
+                                              .target(BASE_URI)
+                                              .path("data/require/")
+                                              .queryParam("a", 7);
+        assertEquals(Status.OK.getStatusCode(), target.request()
+                                                      .get()
+                                                      .getStatus());
+    }
+
+    @Test
     public void testRequireRejectNoTrailingSlash() {
         final WebTarget target = ClientBuilder.newClient()
                                               .target(BASE_URI)
                                               .path("data/require");
+        assertEquals(Status.NOT_FOUND.getStatusCode(), target.request()
+                                                             .get()
+                                                             .getStatus());
+    }
+
+    @Test
+    public void testRequireRejectNoTrailingSlashWithQuery() {
+        final WebTarget target = ClientBuilder.newClient()
+                                              .target(BASE_URI)
+                                              .path("data/require")
+                                              .queryParam("a", 7);
         assertEquals(Status.NOT_FOUND.getStatusCode(), target.request()
                                                              .get()
                                                              .getStatus());
