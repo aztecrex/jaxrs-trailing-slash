@@ -19,6 +19,8 @@ package fun.com.msiops.jaxrs.trailingslash;
 import static org.junit.Assert.*;
 
 import java.net.URI;
+import java.util.Arrays;
+import java.util.Collection;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -31,6 +33,9 @@ import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import com.msiops.jaxrs.trailingslash.ProhibitTrailingSlashFilter;
 import com.msiops.jaxrs.trailingslash.TrailingSlashEnforcementFilter;
@@ -38,9 +43,22 @@ import com.msiops.jaxrs.trailingslash.TrailingSlashEnforcementFilter;
 /**
  * Check behavior when both enforcement and allow filters advise a resource.
  */
+@RunWith(Parameterized.class)
 public class EnforcementWithProhibitFilterTest {
 
     private static final String BASE_URI = "http://localhost:8091/";
+
+    @Parameters
+    public static Collection<Object[]> cases() {
+
+        return Arrays.<Object[]> asList(
+
+        new Object[] { true, false },
+
+        new Object[] { false, true }
+
+        );
+    }
 
     @BeforeClass
     public static void startServer() {
@@ -55,64 +73,54 @@ public class EnforcementWithProhibitFilterTest {
 
     }
 
-    /**
-     * With the allow filter, missing trailing slash is allowed.
-     */
-    @Test
-    public void testPassNoTrailingSlash() {
-        final WebTarget target = ClientBuilder.newClient()
-                .target(BASE_URI)
-                .path("data");
-        assertEquals(Status.OK.getStatusCode(), target.request()
-                .get()
-                .getStatus());
+    private final boolean withSlash;
+
+    private final boolean pass;
+
+    public EnforcementWithProhibitFilterTest(final boolean withSlash,
+            final boolean pass) {
+
+        this.withSlash = withSlash;
+        this.pass = pass;
 
     }
 
     /**
-     * With the allow filter, missing trailing slash is allowed.
+     * Ensure that the policy is applied for the provided path when requested in
+     * its bare form.
      */
     @Test
-    public void testPassNoTrailingSlashWithQuery() {
-        final WebTarget target = ClientBuilder.newClient()
-                .target(BASE_URI)
-                .path("data")
-                .queryParam("a", 7);
-        assertEquals(Status.OK.getStatusCode(), target.request()
-                .get()
-                .getStatus());
+    public void testBarePath() {
+
+        final WebTarget target = bareTarget();
+        assertEquals(expectedStatusCode(), invokeRemote(target));
 
     }
 
     /**
-     * With the prohibit filter, trailing slash is rejected.
+     * Ensure that the policy is applied for the provided path when requested
+     * with an appended query part.
      */
     @Test
-    public void testRejectTrailingSlash() {
+    public void testPathWithQuery() {
 
-        final WebTarget target = ClientBuilder.newClient()
-                .target(BASE_URI)
-                .path("data/");
-        assertEquals(Status.NOT_FOUND.getStatusCode(), target.request()
-                .get()
-                .getStatus());
+        final WebTarget target = bareTarget().queryParam("a", 7);
+        assertEquals(expectedStatusCode(), invokeRemote(target));
 
     }
 
-    /**
-     * With the prohibit filter, trailing slash is rejected.
-     */
-    @Test
-    public void testRejectTrailingSlashWithQuery() {
-
-        final WebTarget target = ClientBuilder.newClient()
+    private WebTarget bareTarget() {
+        return ClientBuilder.newClient()
                 .target(BASE_URI)
-                .path("data/")
-                .queryParam("a", 7);
-        assertEquals(Status.NOT_FOUND.getStatusCode(), target.request()
-                .get()
-                .getStatus());
+                .path("data" + (this.withSlash ? "/" : ""));
+    }
 
+    private int expectedStatusCode() {
+        return (this.pass ? Status.OK : Status.NOT_FOUND).getStatusCode();
+    }
+
+    private int invokeRemote(final WebTarget target) {
+        return target.request().get().getStatus();
     }
 
     @Path("/data")
