@@ -45,13 +45,11 @@ import com.msiops.jaxrs.trailingslash.TrailingSlashEnforcementFilter;
 @RunWith(Parameterized.class)
 public class TrailingSlashPolicyEnforcementTest {
 
-    private static Policy ALWAYS_PASS = s -> true;
+    private static Policy PASS_ALL = s -> true;
 
-    private static Policy ALWAYS_REJECT = s -> false;
+    private static Policy REJECT_ALL = s -> false;
 
-    private static final String WITH = "resource/";
-
-    private static final String WITHOUT = "resource";
+    private static final String PATH = "resource";
 
     /**
      * Case factory.
@@ -66,9 +64,9 @@ public class TrailingSlashPolicyEnforcementTest {
          */
         return Arrays.asList(
 
-                new Object[] { ALWAYS_PASS },
+                new Object[] { PASS_ALL },
 
-                new Object[] { ALWAYS_REJECT }
+                new Object[] { REJECT_ALL }
 
                 );
 
@@ -96,43 +94,27 @@ public class TrailingSlashPolicyEnforcementTest {
         when(this.mreq.getUriInfo()).thenReturn(this.muii);
         when(this.mreq.getProperty(TrailingSlashEnforcementFilter.REQUEST_KEY)).thenReturn(
                 this.underTest);
+        when(this.muii.getPath()).thenReturn(PATH);
 
     }
 
     @Test
     public void testWithoutTrailingSlash() {
 
-        config(WITHOUT);
-
         runFilter();
 
-        check(WITHOUT);
+        check();
 
     }
 
-    @Test
-    public void testWithTrailingSlash() {
+    private void check() {
 
-        config(WITH);
-
-        runFilter();
-
-        check(WITH);
-    }
-
-    private void check(final String path) {
-
-        if (this.underTest.pass(path)) {
+        if (this.underTest.pass(PATH)) {
             verifyPass();
         } else {
             verifyReject();
         }
     }
-
-    private void config(final String path) {
-        when(this.muii.getPath()).thenReturn(path);
-    }
-
     private Matcher<Response> matchesStatus(final Status status) {
         return new ArgumentMatcher<Response>() {
 
